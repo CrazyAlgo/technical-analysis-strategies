@@ -1,0 +1,1 @@
+"""Technical analysis and trading strategies package."""

@@ -3,48 +3,6 @@
 import numpy as np 
 import pandas as pd
 
-def analyze_trades( trade_pnl: pd.Series, holding_periods: pd.Series | None = None,) -> dict[str, float | int]:
-    """Calculate all applicable trade-level performance metrics.
-
-    Parameters
-        trade_pnl : pd.Series
-            Realized P&L for completed trades, ordered chronologically.
-        holding_periods : pd.Series or None, default None
-            Holding period for each completed trade. Must have the same
-            index as trade_pnl.
-
-    Returns
-        dict[str, float | int]
-            Dictionary containing trade-level performance metrics.
-    """
-
-    # Validate inputs once before calculating the metrics.
-    trade_pnl = validate_trade_pnl(trade_pnl)
-
-    if holding_periods is not None:
-        holding_periods = validate_holding_periods( holding_periods, trade_pnl )
-
-    metrics: dict[str, float | int] = {
-        "total_trades": total_trades(trade_pnl),
-        "win_rate": win_rate(trade_pnl),
-        "loss_rate": loss_rate(trade_pnl),
-        "average_winning_trade": average_winning_trade(trade_pnl),
-        "average_losing_trade": average_losing_trade(trade_pnl),
-        "largest_win": largest_win(trade_pnl),
-        "largest_loss": largest_loss(trade_pnl),
-        "profit_factor": profit_factor(trade_pnl),
-        "expectancy_per_trade": expectancy_per_trade(trade_pnl),
-        "average_win_loss_ratio": average_win_loss_ratio(trade_pnl),
-        "maximum_consecutive_wins": maximum_consecutive_wins(trade_pnl),
-        "maximum_consecutive_losses": maximum_consecutive_losses(trade_pnl),
-    }
-
-    if holding_periods is not None:
-        metrics["average_holding_period"] = average_holding_period( trade_pnl, holding_periods )
-
-    return metrics
-
-
 def validate_trade_pnl(trade_pnl: pd.Series) -> pd.Series:
     """Validate realized profit and loss for completed trades."""
 
@@ -91,6 +49,48 @@ def validate_holding_periods(holding_periods: pd.Series, trade_pnl: pd.Series) -
         )
 
     return pd.Series(values, index=holding_periods.index)
+
+
+def analyze_trades( trade_pnl: pd.Series, holding_periods: pd.Series | None = None,) -> dict[str, float | int]:
+    """Calculate all applicable trade-level performance metrics.
+
+    Parameters
+        trade_pnl : pd.Series
+            Realized P&L for completed trades, ordered chronologically.
+        holding_periods : pd.Series or None, default None
+            Holding period for each completed trade. Must have the same
+            index as trade_pnl.
+
+    Returns
+        dict[str, float | int]
+            Dictionary containing trade-level performance metrics.
+    """
+
+    # Validate inputs once before calculating the metrics.
+    trade_pnl = validate_trade_pnl(trade_pnl)
+
+    if holding_periods is not None:
+        holding_periods = validate_holding_periods( holding_periods, trade_pnl )
+
+    metrics: dict[str, float | int] = {
+        "total_trades": total_trades(trade_pnl),
+        "win_rate": win_rate(trade_pnl),
+        "loss_rate": loss_rate(trade_pnl),
+        "average_winning_trade": average_winning_trade(trade_pnl),
+        "average_losing_trade": average_losing_trade(trade_pnl),
+        "largest_win": largest_win(trade_pnl),
+        "largest_loss": largest_loss(trade_pnl),
+        "profit_factor": profit_factor(trade_pnl),
+        "expectancy_per_trade": expectancy_per_trade(trade_pnl),
+        "average_win_loss_ratio": average_win_loss_ratio(trade_pnl),
+        "maximum_consecutive_wins": maximum_consecutive_wins(trade_pnl),
+        "maximum_consecutive_losses": maximum_consecutive_losses(trade_pnl),
+    }
+
+    if holding_periods is not None:
+        metrics["average_holding_period"] = average_holding_period( trade_pnl, holding_periods )
+
+    return metrics
 
 
 def total_trades(trade_pnl: pd.Series) -> int: 

@@ -3,6 +3,7 @@
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt 
+from technical_analysis.utils.plotting_utils import new_axes
 
 def validate_heatmap_data(data: pd.DataFrame, name: str= "data") -> pd.DataFrame:
     """Validate a non-empty numeric DataFrame suitable for a heatmap."""
@@ -63,19 +64,6 @@ def validate_datetime_returns(returns: pd.Series) -> pd.Series:
         raise ValueError("returns cannot contain returns below -100%.")
 
     return pd.Series(values, index= returns.index, name = returns.name)
-
-
-def new_axes(ax=None, figsize= (12,6)):
-    """Returns the supplied Axes or creates a new one"""
-
-    if ax is None:
-        _, ax = plt.subplots(figsize = figsize)
-
-    if not isinstance(ax, plt.Axes):
-        raise TypeError("ax must be a Matplotlib Axes.")
-
-    return ax
-
 
 def plot_heatmap(data: pd.DataFrame,
                  title: str,

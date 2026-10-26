@@ -3,28 +3,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-def validate_series(series: pd.Series, returns: bool = False) ->pd.Series:
-    """Validate a non-empty, finite numeric pandas Series."""
-
-    if not isinstance(series, pd.Series):
-        raise TypeError("series must be a pandas series")
-
-    if series.empty:
-        raise ValueError("series cannot be empty.")
-
-    if series.isna().any():
-        raise ValueError("series cannot contain missing values.")
-
-    values = series.to_numpy(dtype = float)
-
-    if not np.isfinite(values).all():
-        raise ValueError("series must contain only finite values.")
-
-    if returns and (values < -1).any():
-        raise ValueError("series cannot contain returns below -100%")
-
-    return pd.Series(values, index=series.index)
+from technical_analysis.utils.plotting_utils import new_axes
+from technical_analysis.utils.validation import validate_series, validate_positive_integer
 
 
 def validate_matching_indexes(first: pd.Series, second: pd.Series, first_name : str, second_name : str)-> None:
@@ -32,25 +12,6 @@ def validate_matching_indexes(first: pd.Series, second: pd.Series, first_name : 
 
     if not first.index.equals(second.index):
         raise ValueError(f"{first_name} series & {second_name} series must have matching indexes.")
-
-
-def validate_positive_integer(value: int, name: str)-> None:
-    """Valideate a positive integer paramrter."""
-
-    if not isinstance(value, (int, np.integer)) or isinstance(value, (bool, np.bool_)) :
-        raise TypeError(f"the {name} must be an integer")
-
-    if value<= 0:
-        raise ValueError(f"{name} must be positive.")
-
-
-def new_axes(ax= None, figsize = (12,6)):
-    """Returns the supplied Axes or create a new one."""
-
-    if ax is None:
-        _, ax = plt.subplots(figsize = figsize) #returns fig and ax, we need only ax.
-
-    return ax
 
 
 #1. Equity curve (linear or logarithmic scale)

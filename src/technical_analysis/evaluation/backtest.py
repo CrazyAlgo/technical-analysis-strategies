@@ -3,10 +3,8 @@
 import numpy as np 
 import pandas as pd 
 
-def run_backtest( prices: pd.DataFrame, 
-                 positions: pd.DataFrame, 
-                 initial_capital: float = 100_000.0, 
-                 transaction_cost_rate: float = 0.001
+def run_backtest( prices: pd.DataFrame,  positions: pd.DataFrame, 
+                 initial_capital: float = 100_000.0, transaction_cost_rate: float = 0.001
                  ) -> dict[str, pd.DataFrame | pd.Series | float]:
     """Backtest a multi-asset portfolio using target weights.
     

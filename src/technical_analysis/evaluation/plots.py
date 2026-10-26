@@ -76,7 +76,7 @@ def plot_rolling_sharpe( returns: pd.Series, window: int = 63, periods_per_year:
         risk_free_rate is an annualized rate expressed as a decimal.
     """
 
-    returns =  validate_series(returns, returns = True)
+    returns =  validate_series(returns)
     validate_positive_integer(window, "window")
     validate_positive_integer(periods_per_year, "periods_per_year")
 
@@ -118,7 +118,7 @@ def plot_rolling_sharpe( returns: pd.Series, window: int = 63, periods_per_year:
 def plot_rolling_volatility(returns: pd.Series, window: int = 21, periods_per_year: int = 252, ax = None) -> plt.Axes:
     """Plot rolling annualized volatitlity."""
 
-    returns = validate_series(returns, returns = True)
+    returns = validate_series(returns)
     validate_positive_integer(window, "window")
     validate_positive_integer(periods_per_year, "periods_per_year")
 
@@ -141,8 +141,8 @@ def plot_rolling_volatility(returns: pd.Series, window: int = 21, periods_per_ye
 def plot_rolling_beta(strategy_returns: pd.Series, benchmark_returns: pd.Series, window: int = 63, ax = None) -> plt.Axes:
     """Plot rolling beta of strategy returns against benchmark returns."""
 
-    strategy_returns = validate_series(strategy_returns, returns = True)
-    benchmark_returns = validate_series(benchmark_returns, returns = True)
+    strategy_returns = validate_series(strategy_returns)
+    benchmark_returns = validate_series(benchmark_returns)
     validate_matching_indexes(strategy_returns, benchmark_returns, "strategy_returns", "benchmark_returns")
     validate_positive_integer(window, "window")
 
@@ -170,7 +170,7 @@ def plot_rolling_beta(strategy_returns: pd.Series, benchmark_returns: pd.Series,
 def plot_returns_distribution(returns: pd.Series, bins: int = 50, kde: bool = False, ax = None) -> plt.Axes:
     """Plot periodic returns as a histogram, optionally with a KDE."""
 
-    returns = validate_series(returns, returns = True)
+    returns = validate_series(returns)
     validate_positive_integer(bins, "bins")
 
     if kde:
@@ -211,7 +211,7 @@ def plot_qq(returns: pd.Series, ax = None)-> plt.Axes:
     """Compare empirical return quantitles with theoretical normal quantiles"""
 
     
-    returns = validate_series(returns, returns = True)
+    returns = validate_series(returns)
 
     if len(returns) < 2:
             raise ValueError("At least two observations are required for a Q-Q plot.")
@@ -249,7 +249,7 @@ def plot_acf(returns: pd.Series, lags: int = 40, ax= None) -> plt.Axes:
     Dsshed bounds are approximate 95% white-noise bounds.
     """
 
-    returns = validate_series(returns, returns = True)
+    returns = validate_series(returns)
     validate_positive_integer(lags, "lags")
 
     values = returns.to_numpy(dtype = float)
@@ -309,8 +309,8 @@ def plot_trade_pnl_distribution( trade_pnl: pd.Series, bins: int = 30, ax = None
 def plot_gross_vs_net_equity( gross_returns: pd.Series, net_returns: pd.Series, initial_capital: float = 1.0, ax = None) -> plt.Axes:
     """Compare equity curves compounded from gross and net returns."""
 
-    gross_returns = validate_series(gross_returns, returns = True)
-    net_returns = validate_series(net_returns, returns = True)
+    gross_returns = validate_series(gross_returns)
+    net_returns = validate_series(net_returns)
     validate_matching_indexes(gross_returns, net_returns, "gross_returns", "net_returns")
 
     if not np.isscalar(initial_capital) or isinstance(initial_capital, (bool, np.bool_)):
